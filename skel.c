@@ -340,25 +340,21 @@ void ARPRply(struct arp_header *arp_hdr,
 	send_packet(pktMaker(eth_hdr, NULL, NULL, arp_hdr, interface));
 }
 
-void ARPRplyRec(queue q, struct arp_entry *arp_table, struct route_table_entry *rtable, int rtable_size, struct arp_header *arp_hdr, int arpSize)
+void ARPRplyRec(queue q, struct arp_entry *arp_table, struct arp_header *arp_hdr, int arpSize)
 {
-	// get the first packet from the queue and forward it
-	packet *deQueuedPkt = (packet *)queue_deq(q);
-
-	// parse ethernet and ip headers and find the best route
-	struct ether_header *eth_hdr_reply = (struct ether_header *)deQueuedPkt->payload;
-	struct iphdr *ip_hdr_reply = (struct iphdr *)(deQueuedPkt->payload + sizeof(struct ether_header));
-	struct route_table_entry *nextDest = get_best_route(rtable, ntohl(ip_hdr_reply->daddr), rtable_size);
-
-	deQueuedPkt->interface = nextDest->interface;
-
 	// update the arp table with the replied mac address
 	arp_table[arpSize].ip = arp_hdr->spa;
 	memcpy(arp_table[arpSize++].mac, arp_hdr->sha, 6);
 
+	// get the first packet from the queue
+	packet *deQueuedPkt = (packet *)queue_deq(q);
+
+	// parse ethernet header
+	struct ether_header *eth_hdr_reply = (struct ether_header *)deQueuedPkt->payload;
+
 	// update the ethernet header with the right info
 	uint8_t mac[6];
-	get_interface_mac(nextDest->interface, mac);
+	get_interface_mac(deQueuedPkt->interface, mac);
 	ETHMaker(eth_hdr_reply, arp_hdr->sha, mac, htons(ETHERTYPE_IP), -1);
 
 	send_packet(deQueuedPkt);

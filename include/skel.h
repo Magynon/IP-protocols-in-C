@@ -175,7 +175,7 @@ void ARPMaker(struct arp_header *arp_hdr, uint8_t *destHardware, uint8_t *srcHar
 void ARPRply(struct arp_header *arp_hdr,
 			 struct ether_header *eth_hdr, uint8_t *thisMACAddress, int interface);
 
-void ARPRplyRec(queue q, struct arp_entry *arp_table, struct route_table_entry *rtable, int rtable_size, struct arp_header *arp_hdr, int arpSize);
+void ARPRplyRec(queue q, struct arp_entry *arp_table, struct arp_header *arp_hdr, int arpSize);
 
 void ARPReq(uint32_t destIP, uint32_t srcIP, struct ether_header *ethHead,
 			int interface);

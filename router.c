@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
 			if (htons(arp_hdr->op) == ARPOP_REPLY && !queue_empty(myQueue))
 			{
 				// send the latest queued packet to the newly found destination
-				ARPRplyRec(myQueue, arp_table, rtable, rtable_size, arp_hdr, arp_size);
+				ARPRplyRec(myQueue, arp_table, arp_hdr, arp_size);
 			}
 			continue;
 		}
@@ -126,7 +126,7 @@ int main(int argc, char *argv[])
 
 				// enqueue packet
 				packet queuePkt;
-				queuePkt.interface = m.interface;
+				queuePkt.interface = route->interface;
 				queuePkt.len = m.len;
 				memcpy(queuePkt.payload, m.payload, m.len);
 				queue_enq(myQueue, &queuePkt);
