@@ -132,7 +132,7 @@ int main(int argc, char *argv[])
 				queue_enq(myQueue, &queuePkt);
 
 				// send ARP request
-				ARPReq(route->next_hop, inet_addr(get_interface_ip(route->interface)), eth_hdr, route->interface);
+				ARPReq(eth_hdr, route->next_hop, inet_addr(get_interface_ip(route->interface)), route->interface);
 			}
 		}
 	}

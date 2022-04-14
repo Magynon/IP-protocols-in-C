@@ -360,7 +360,7 @@ void ARPRplyRec(queue q, struct arp_entry *arp_table, struct arp_header *arp_hdr
 	send_packet(deQueuedPkt);
 }
 
-void ARPReq(uint32_t destIP, uint32_t srcIP, struct ether_header *eth_hdr,
+void ARPReq(struct ether_header *eth_hdr, uint32_t destIP, uint32_t srcIP,
 			int interface)
 {
 	// update ARP header with the right info and send it

@@ -177,7 +177,7 @@ void ARPRply(struct arp_header *arp_hdr,
 
 void ARPRplyRec(queue q, struct arp_entry *arp_table, struct arp_header *arp_hdr, int arpSize);
 
-void ARPReq(uint32_t destIP, uint32_t srcIP, struct ether_header *ethHead,
+void ARPReq(struct ether_header *ethHead, uint32_t destIP, uint32_t srcIP,
 			int interface);
 
 void ICMP(uint32_t destIP, uint32_t srcIP, struct ether_header *ethHead,
